@@ -20,16 +20,53 @@ parrafo.textContent = 'Adivina el número entre 1 y 10';
 function asignarTextoElemento(elemento, texto) {
     let elementoHTML = document.querySelector(elemento);
     elementoHTML.innerHTML = texto;
+    return;
 }
 
 // Utiliza la función para cambiar el contenido de un elemento h1 y un párrafo
 asignarTextoElemento('h1', 'Juego de número secreto');
 asignarTextoElemento('p', 'Adivina el número entre 1 y 10');
 
+let intentos = 1;
+function verificaIntento() {
+    let numeroDeUsuario = parseInt(document.getElementById('valorUsuario').value);
+
+    if (numeroDeUsuario === numeroSecreto) {
+        asignarTextoElemento('p', `¡Felicidades! Has acertado en: ${intentos === 1 ? '¡Primer intento!' : intentos + ' intentos!'}`);
+        //document.getElementById('reiniciar').disabled = false; 
+        document.getElementById('reiniciar').removeAttribute('disabled');
+    } else {
+        //El usuario no acertó.
+        if (numeroDeUsuario > numeroSecreto) {
+            asignarTextoElemento('p', 'El número secreto es menor');
+        } else {
+            asignarTextoElemento('p', 'El número secreto es mayor');
+        }
+        intentos++;
+        limpiarCampo();
+    }
+}
+
+function limpiarCampo() {
+    document.querySelector('#valorUsuario').value = '';
+}
 
 let numeroSecreto = generaNumeroSecreto();
 console.log(numeroSecreto);
 
-function generaNumeroSecreto(params) {  
+function generaNumeroSecreto(params) {
     return Math.floor(Math.random() * 10) + 1;
+}
+
+function valoresIniciales() {
+    intentos = 1;
+    limpiarCampo();
+    mostrarMensajes();
+    document.getElementById('reiniciar').setAttribute('disabled', true);
+    numeroSecreto = generaNumeroSecreto();
+}
+
+function mostrarMensajes() {
+    asignarTextoElemento('h1', 'Juego de número secreto');
+    asignarTextoElemento('p', 'Adivina el número entre 1 y 10');
 }
